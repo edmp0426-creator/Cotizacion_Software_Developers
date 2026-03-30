@@ -452,7 +452,7 @@
         ventana.document.close();
         ventana.print();
     }
-    // ================= BOTON EMAIL =================
+    // ================= BOTON EMAIL  =================
 
     function enviarCorreo() {
     let texto = "Resumen de costos:\n\n";

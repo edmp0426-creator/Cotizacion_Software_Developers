@@ -2,10 +2,20 @@
 session_start();
 
 // Configuración de la base de datos
-// --------- PENDIENTE ---------- 08/06/2024
+$servername = "db";
+$username_db = "apti";
+$password_db = "apti";
+$dbname = "AdministracionProyectosTecnologiasInformacion";
 
-// Verificar si hay una sesión iniciada 
-// --------- CAMBIOS REALIZADOS ---------- 08/06/2024
+$conn = new mysqli($servername, $username_db, $password_db, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$conn->set_charset("utf8");
+
+// Verificar si hay una sesión iniciada
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     header('Location: CotView.php');
     exit();
@@ -15,16 +25,30 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // -------- CAMBIAR LAS CREDENCIALES Y USAR LAS DE LA BASE DE DATOS -------
-    if ($username === 'admin' && $password === 'password') {
-        $_SESSION['loggedin'] = true;
-        $_SESSION['username'] = $username;
-        header('Location: dashboard.php');
-        exit();
+    // Verificar credenciales en la base de datos
+    $stmt = $conn->prepare("SELECT password FROM usuarios WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        if (password_verify($password, $row['password'])) {
+            $_SESSION['loggedin'] = true;
+            $_SESSION['username'] = $username;
+            header('Location: CotView.php');
+            exit();
+        } else {
+            $error = 'Invalid username or password.';
+        }
     } else {
         $error = 'Invalid username or password.';
     }
+
+    $stmt->close();
 }
+
+$conn->close();
 
 // Visualización del formulario de inicio de sesión
 ?>

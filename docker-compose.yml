@@ -9,7 +9,7 @@ services:
   db:
     image: mysql:latest
     environment:
-      - MYSQL_DATABASE=AministracionProyectosTecnologiasInformación
+      - MYSQL_DATABASE=AdministracionProyectosTecnologiasInformacion
       - MYSQL_USER=apti
       - MYSQL_PASSWORD=apti
       - MYSQL_ALLOW_EMPTY_PASSWORD=1

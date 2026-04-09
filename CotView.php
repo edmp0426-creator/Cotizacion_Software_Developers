@@ -9,6 +9,7 @@
 </style>
 </head>
 <body>
+    <a href="logout.php" style="float: right;">Cerrar sesión</a>
     <p>Desarrollo (core del equipo)</p>
 
     <!-- ================= BACKEND ================= -->

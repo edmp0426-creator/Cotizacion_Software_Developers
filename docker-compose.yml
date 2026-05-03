@@ -3,7 +3,7 @@ services:
   php:
     build: .
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
         - .:/var/www/html
   db:
@@ -13,6 +13,9 @@ services:
       - MYSQL_USER=apti
       - MYSQL_PASSWORD=apti
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:

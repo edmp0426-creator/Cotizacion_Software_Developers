@@ -4,6 +4,68 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('Location: login.php');
     exit();
 }
+
+// Procesar guardado de cotización
+$mensaje = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])) {
+    $servername = "db";
+    $username_db = "apti";
+    $password_db = "apti";
+    $dbname = "AdministracionProyectosTecnologiasInformacion";
+
+    $conn = new mysqli($servername, $username_db, $password_db, $dbname);
+    
+    if ($conn->connect_error) {
+        $mensaje = '<div style="color: red; background: #ffe6e6; padding: 10px; margin: 10px 0; border-radius: 4px;">Error de conexión: ' . $conn->connect_error . '</div>';
+    } else {
+        $conn->set_charset("utf8");
+        
+        $nombre = trim($_POST['nombre_cotizacion'] ?? 'Sin nombre');
+        $total = floatval($_POST['total_cotizacion'] ?? 0);
+        $username = $_SESSION['username'];
+
+        // Obtener ID del usuario
+        $stmt = $conn->prepare("SELECT id FROM usuarios WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $user_row = $result->fetch_assoc();
+            $usuario_id = $user_row['id'];
+
+            // Construir datos JSON
+            $datos = [];
+            foreach ($_POST as $key => $value) {
+                if (strpos($key, 'item_') === 0) {
+                    $id = substr($key, 5);
+                    $cantidad = floatval($value);
+                    if ($cantidad > 0 && isset($_POST['label_' . $id]) && isset($_POST['costo_' . $id])) {
+                        $datos[$id] = [
+                            'label' => $_POST['label_' . $id],
+                            'cantidad' => $cantidad,
+                            'costo' => floatval($_POST['costo_' . $id])
+                        ];
+                    }
+                }
+            }
+            
+            $datos_json = json_encode($datos);
+
+            // Guardar cotización
+            $stmt = $conn->prepare("INSERT INTO historial_cotizaciones (usuario_id, nombre_cotizacion, datos_cotizacion, total_costo) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("issd", $usuario_id, $nombre, $datos_json, $total);
+
+            if ($stmt->execute()) {
+                $mensaje = '<div style="color: green; background: #e6ffe6; padding: 10px; margin: 10px 0; border-radius: 4px;">✓ Cotización guardada correctamente</div>';
+            } else {
+                $mensaje = '<div style="color: red; background: #ffe6e6; padding: 10px; margin: 10px 0; border-radius: 4px;">Error al guardar: ' . $stmt->error . '</div>';
+            }
+            $stmt->close();
+        }
+        $conn->close();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -17,6 +79,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 </head>
 <body>
     <a href="logout.php" style="float: right;">Cerrar sesión</a>
+    <?php echo $mensaje; ?>
     <p>Desarrollo (core del equipo)</p>
 
     <!-- ================= BACKEND ================= -->
@@ -307,6 +370,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <!-- ================= Generar Ticket ================= -->
     <br><br>
     <button id="btnTotal">Generar Ticket</button>
+    <a href="historial.php" style="display: inline-block; background-color: #17a2b8; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; margin-left: 10px;">📋 Ver Historial</a>
 
     <h2>Total General: $<span id="totalGeneral">0</span></h2>
 
@@ -314,6 +378,19 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         <h3>Resumen</h3>
         <ul id="listaTicket"></ul>
     </div>
+
+    <!-- ================= FORMULARIO PARA GUARDAR ================= -->
+    <form method="POST" style="margin-top: 20px; padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 4px;">
+        <h3>Guardar Cotización</h3>
+        <label for="nombre_cot">Nombre de la cotización:</label>
+        <input type="text" id="nombre_cot" name="nombre_cotizacion" placeholder="ej: Proyecto XYZ" required style="padding: 8px; margin: 10px 0; width: 300px;">
+        
+        <div id="itemsOcultos"></div>
+        <input type="hidden" name="total_cotizacion" id="total_hidden" value="0">
+        
+        <br><br>
+        <button type="submit" name="guardar_cotizacion" value="1" style="background-color: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer;">💾 Guardar Cotización</button>
+    </form>
 
     <!-- ================= Generar PDF ================= -->
     <button onclick="imprimirTicket()">Descargar PDF</button>
@@ -408,7 +485,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
         let total = 0;
         const lista = document.getElementById("listaTicket");
+        const itemsOcultos = document.getElementById("itemsOcultos");
         lista.innerHTML = ""; // limpiar ticket
+        itemsOcultos.innerHTML = ""; // limpiar inputs ocultos
 
         // SOLO checkboxes internos (no los principales)
         document.querySelectorAll(".opcionDB:checked, .opcionFR:checked, .opcionFS:checked, .opcionPM:checked, .opcionPO:checked, .opcionDS:checked, .opcionQA:checked, .opcionDV:checked, .opcionTL:checked").forEach(cb => {
@@ -418,9 +497,11 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             const label = contenedor.querySelector("label").textContent;
             const input = contenedor.querySelector("input[type='number']");
             const resultado = contenedor.querySelector("span");
+            const id = cb.dataset.id;
 
             const cantidad = parseFloat(input.value) || 0;
             const subtotal = parseFloat(resultado.textContent) || 0;
+            const costo = sueldos[id];
 
             if (cantidad > 0) {
                 total += subtotal;
@@ -428,11 +509,31 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                 const li = document.createElement("li");
                 li.textContent = `${label} | Cantidad: ${cantidad} | Subtotal: $${subtotal}`;
                 lista.appendChild(li);
+
+                // Agregar inputs ocultos para el formulario
+                const inputItem = document.createElement("input");
+                inputItem.type = "hidden";
+                inputItem.name = "item_" + id;
+                inputItem.value = cantidad;
+                itemsOcultos.appendChild(inputItem);
+
+                const inputLabel = document.createElement("input");
+                inputLabel.type = "hidden";
+                inputLabel.name = "label_" + id;
+                inputLabel.value = label;
+                itemsOcultos.appendChild(inputLabel);
+
+                const inputCosto = document.createElement("input");
+                inputCosto.type = "hidden";
+                inputCosto.name = "costo_" + id;
+                inputCosto.value = costo;
+                itemsOcultos.appendChild(inputCosto);
             }
 
         });
 
         document.getElementById("totalGeneral").textContent = total;
+        document.getElementById("total_hidden").value = total;
     });
     // ================= BOTON PDF =================
 

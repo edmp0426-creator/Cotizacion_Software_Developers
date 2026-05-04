@@ -130,11 +130,225 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
     .categoria-card > br {
         display: none;
     }
+    
+    /* Simplified CotView Redesign Styles */
+    .redesign-section {
+        max-width: 700px;
+        margin: 30px auto;
+        padding: 0 16px;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+    }
+    
+    .btn-modern {
+        padding: 12px 24px;
+        font-size: 15px;
+        font-weight: 500;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    #btnTotal.btn-modern {
+        background: #2563eb;
+        color: white;
+    }
+    
+    #btnTotal.btn-modern:hover {
+        background: #1d4ed8;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+    
+    .btn-history {
+        background: #0ea5e9;
+        color: white;
+    }
+    
+    .btn-history:hover {
+        background: #0284c7;
+        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+    }
+    
+    .btn-modern.btn-secondary {
+        background: #6b7280;
+        color: white;
+    }
+    
+    .btn-modern.btn-secondary:hover {
+        background: #4b5563;
+        box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+    }
+    
+    .grand-total-card {
+        background: #2563eb;
+        color: white;
+        text-align: center;
+        padding: 24px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+        font-size: 24px;
+        font-weight: 600;
+    }
+    
+    .grand-total-card span {
+        font-size: 1.8em;
+    }
+    
+    .summary-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e5e7eb;
+    }
+    
+    .summary-card h3 {
+        color: #2563eb;
+        margin-bottom: 16px;
+        font-size: 20px;
+    }
+    
+    .summary-card ul {
+        list-style: none;
+    }
+    
+    .summary-card li {
+        background: #f9fafb;
+        padding: 12px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        border-left: 3px solid #2563eb;
+        font-size: 15px;
+    }
+    
+    .save-form-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e5e7eb;
+    }
+    
+    .save-form-card h3 {
+        color: #2563eb;
+        margin-bottom: 16px;
+        font-size: 20px;
+    }
+    
+    .save-form-card label {
+        display: block;
+        margin-bottom: 6px;
+        color: #374151;
+        font-weight: 500;
+    }
+    
+    .save-form-card input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: border-color 0.2s ease;
+        margin-bottom: 16px;
+    }
+    
+    .save-form-card input[type="text"]:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.05);
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .redesign-section {
+            padding: 0 16px;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .btn-modern {
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .grand-total-card {
+            padding: 24px 20px;
+            font-size: 24px;
+        }
+        
+        .grand-total-card span {
+            font-size: 1.8em;
+        }
+        
+        .summary-card, .save-form-card {
+            padding: 24px 20px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .grand-total-card {
+            font-size: 20px;
+        }
+        
+        .grand-total-card span {
+            font-size: 1.5em;
+        }
+    }
+    
 </style>
 </head>
 <body>
     <a href="logout.php" style="float: right;">Cerrar sesión</a>
     <?php echo $mensaje; ?>
+    
+    <!-- Axotimate Heading using project colors -->
+    <div class="axotimate-heading" style="
+        background: linear-gradient(135deg, #2563eb 0%, #0758ff 100%);
+        color: white;
+        text-align: center;
+        padding: 32px 24px;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(37, 99, 235, 0.3);
+        margin: 0 auto 40px;
+        max-width: 700px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 700;
+    ">
+        <h1 style="
+            font-size: 36px;
+            margin: 0 0 8px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        ">Axotimate</h1>
+        <p style="
+            font-size: 16px;
+            opacity: 0.95;
+            margin: 0;
+        ">Software Development Cost Estimator</p>
+    </div>
     <section class="categoria-card">
         <h2 class="categoria-titulo">Desarrollo</h2>
         <p class="categoria-subtitulo">core del equipo</p>
@@ -457,36 +671,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
     </div>
 
     </section>
-    <!-- ================= Generar Ticket ================= -->
-    <br><br>
-    <button id="btnTotal">Generar Ticket</button>
-    <a href="historial.php" style="display: inline-block; background-color: #17a2b8; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; margin-left: 10px;">Ver Historial</a>
-
-    <h2>Total General: $<span id="totalGeneral">0</span></h2>
-
-    <div id="ticket" style="margin-top:20px; border:1px solid #ccc; padding:10px;">
-        <h3>Resumen</h3>
-        <ul id="listaTicket"></ul>
+    
+    <div class="redesign-section">
+        <!-- Action Buttons Card -->
+        <div class="action-buttons">
+            <button id="btnTotal" class="btn-modern">Generar Ticket</button>
+            <a href="historial.php" class="btn-modern btn-history">Ver Historial</a>
+        </div>
+        
+        <!-- Grand Total Card -->
+        <div class="grand-total-card">
+            Total General: $<span id="totalGeneral">0</span>
+        </div>
+        
+        <!-- Summary Card -->
+        <div id="ticket" class="summary-card">
+            <h3>Resumen</h3>
+            <ul id="listaTicket"></ul>
+        </div>
+        
+        <!-- Save Quote Form Card -->
+        <form method="POST" class="save-form-card">
+            <h3>Guardar Cotización</h3>
+            <label for="nombre_cot">Nombre de la cotización:</label>
+            <input type="text" id="nombre_cot" name="nombre_cotizacion" placeholder="ej: Proyecto XYZ" required>
+            
+            <div id="itemsOcultos"></div>
+            <input type="hidden" name="total_cotizacion" id="total_hidden" value="0">
+            
+            <div class="form-actions">
+                <button type="submit" name="guardar_cotizacion" value="1" class="btn-modern">Guardar Cotización</button>
+                <button type="button" onclick="imprimirTicket()" class="btn-modern btn-secondary">Descargar PDF</button>
+                <button type="button" onclick="enviarCorreo()" class="btn-modern btn-secondary">Enviar por Email</button>
+            </div>
+        </form>
     </div>
-
-    <!-- ================= FORMULARIO PARA GUARDAR ================= -->
-    <form method="POST" style="margin-top: 20px; padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 4px;">
-        <h3>Guardar Cotización</h3>
-        <label for="nombre_cot">Nombre de la cotización:</label>
-        <input type="text" id="nombre_cot" name="nombre_cotizacion" placeholder="ej: Proyecto XYZ" required style="padding: 8px; margin: 10px 0; width: 300px;">
-        
-        <div id="itemsOcultos"></div>
-        <input type="hidden" name="total_cotizacion" id="total_hidden" value="0">
-        
-        <br><br>
-        <button type="submit" name="guardar_cotizacion" value="1" style="background-color: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer;">Guardar Cotización</button>
-    </form>
-
-    <!-- ================= Generar PDF ================= -->
-    <button onclick="imprimirTicket()">Descargar PDF</button>
-
-    <!-- ================= Generar email ================= -->
-    <button onclick="enviarCorreo()">Enviar por Email</button>
 
     <script>
 

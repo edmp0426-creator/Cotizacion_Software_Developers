@@ -325,16 +325,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
     <a href="logout.php" style="float: right;">Cerrar sesión</a>
     <?php echo $mensaje; ?>
     
-    <!-- Axotimate Heading using project colors -->
+    <!-- Axotimate Full-Width Header using project colors -->
     <div class="axotimate-heading" style="
         background: linear-gradient(135deg, #2563eb 0%, #0758ff 100%);
         color: white;
         text-align: center;
-        padding: 32px 24px;
-        border-radius: 20px;
+        padding: 32px 20px;
+        border-radius: 0 0 20px 20px;
         box-shadow: 0 8px 32px rgba(37, 99, 235, 0.3);
-        margin: 0 auto 40px;
-        max-width: 700px;
+        margin: 0 0 40px 0;
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-weight: 700;
     ">

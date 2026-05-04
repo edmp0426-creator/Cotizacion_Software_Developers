@@ -79,11 +79,7 @@ $stmt->close();
             background-color: #0056b3;
         }
         .logout-btn {
-            background-color: #dc3545 !important;
             float: right;
-        }
-        .logout-btn:hover {
-            background-color: #c82333 !important;
         }
         table {
             width: 100%;

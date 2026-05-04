@@ -79,7 +79,11 @@ $stmt->close();
             background-color: #0056b3;
         }
         .logout-btn {
+            background-color: #ffffff !important;
             float: right;
+        }
+        .logout-btn:hover {
+            background-color: #ffffff !important;
         }
         table {
             width: 100%;
@@ -199,12 +203,12 @@ $stmt->close();
 
 <div class="contenedor">
     <a href="logout.php" class="logout-btn">Cerrar sesión</a>
-    <h1>📊 Historial de Cotizaciones</h1>
+    <h1> Historial de Cotizaciones</h1>
     <p>Usuario: <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong></p>
 
     <div class="botones-superior">
         <a href="CotView.php">← Volver a Cotizador</a>
-        <button onclick="limpiarHistorial()" style="background-color: #ffc107; color: #000;">🗑️ Limpiar Historial</button>
+        <button onclick="limpiarHistorial()" style="background-color: #ffc107; color: #000;"> Limpiar Historial</button>
     </div>
 
     <?php if ($cotizaciones->num_rows > 0): ?>

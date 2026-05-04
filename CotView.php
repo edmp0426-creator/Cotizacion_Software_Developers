@@ -73,18 +73,77 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
 <meta charset="UTF-8">
 <title>Calculadora de Sueldos</title>
 <style>
-    body { font-family: Arial; }
+    body {
+        font-family: Arial, sans-serif;
+        background: #f7f7f7;
+        color: #0f2140;
+        margin: 0;
+        padding: 32px 0;
+    }
+
     .contenedor { display: none; margin-left: 20px; }
+
+    .categoria-card {
+        background: #fff;
+        border: 1px solid #e9e9e9;
+        border-radius: 14px;
+        box-shadow: 0 1px 3px rgba(15, 33, 64, 0.14);
+        box-sizing: border-box;
+        margin: 0 auto 24px;
+        max-width: 672px;
+        padding: 34px 32px 28px;
+    }
+
+    .categoria-titulo {
+        color: #0758ff;
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0 0 8px;
+    }
+
+    .categoria-subtitulo {
+        color: #536079;
+        font-size: 13px;
+        margin: 0 0 26px;
+    }
+
+    .rol-principal {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+        margin: 0 0 20px;
+    }
+
+    .rol-principal input[type="checkbox"] {
+        accent-color: #424242;
+        flex: 0 0 auto;
+        height: 20px;
+        width: 20px;
+    }
+
+    .rol-principal label {
+        color: #0f2140;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .categoria-card > br {
+        display: none;
+    }
 </style>
 </head>
 <body>
     <a href="logout.php" style="float: right;">Cerrar sesión</a>
     <?php echo $mensaje; ?>
-    <p>Desarrollo (core del equipo)</p>
+    <section class="categoria-card">
+        <h2 class="categoria-titulo">Desarrollo</h2>
+        <p class="categoria-subtitulo">core del equipo</p>
 
     <!-- ================= BACKEND ================= -->
-    <input type="checkbox" id="principalDB">
-    <label for="principalDB">Desarrollador Backend</label>
+    <div class="rol-principal">
+        <input type="checkbox" id="principalDB">
+        <label for="principalDB">Desarrollador Backend</label>
+    </div>
 
     <div id="contenedorDB" class="contenedor">
 
@@ -114,8 +173,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
     <br><br>
 
     <!-- ================= FRONTEND ================= -->
-    <input type="checkbox" id="principalFR">
-    <label for="principalFR">Desarrollador Frontend</label>
+    <div class="rol-principal">
+        <input type="checkbox" id="principalFR">
+        <label for="principalFR">Desarrollador Frontend</label>
+    </div>
 
     <div id="contenedorFR" class="contenedor">
 
@@ -145,8 +206,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
     <br><br>
 
     <!-- ================= FULLSTACK ================= -->
-    <input type="checkbox" id="principalFS">
-    <label for="principalFS">Desarrollador Fullstack</label>
+    <div class="rol-principal">
+        <input type="checkbox" id="principalFS">
+        <label for="principalFS">Desarrollador Fullstack</label>
+    </div>
 
     <div id="contenedorFS" class="contenedor">
 
@@ -175,12 +238,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
 
     <br><br>
 
-    <p>Gestión y coordinación</p>
+    </section>
+
+    <section class="categoria-card">
+        <h2 class="categoria-titulo">Gesti&oacute;n y coordinaci&oacute;n</h2>
 
     
     <!-- ================= PROJECT MANAGER ================= -->
-    <input type="checkbox" id="principalPM">
-    <label for="principalPM">Project Manager</label>
+    <div class="rol-principal">
+        <input type="checkbox" id="principalPM">
+        <label for="principalPM">Project Manager</label>
+    </div>
 
     <div id="contenedorPM" class="contenedor">
 
@@ -210,8 +278,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
     <br><br>
 
     <!-- ================= PRODUCT OWNER ================= -->
-    <input type="checkbox" id="principalPO">
-    <label for="principalPO">Product Owner</label>
+    <div class="rol-principal">
+        <input type="checkbox" id="principalPO">
+        <label for="principalPO">Product Owner</label>
+    </div>
 
     <div id="contenedorPO" class="contenedor">
 
@@ -240,10 +310,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
 
     <br><br>
 
-    <p>Diseño</p>
+    </section>
+
+    <section class="categoria-card">
+        <h2 class="categoria-titulo">Dise&ntilde;o</h2>
     <!-- ================= UX/UI DESIGNER ================= -->
-    <input type="checkbox" id="principalDS">
-    <label for="principalDS">UX/UI Designer</label>
+    <div class="rol-principal">
+        <input type="checkbox" id="principalDS">
+        <label for="principalDS">UX/UI Designer</label>
+    </div>
 
     <div id="contenedorDS" class="contenedor">
 
@@ -272,10 +347,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
 
     <br><br>
 
-    <p>Calidad</p>
+    </section>
+
+    <section class="categoria-card">
+        <h2 class="categoria-titulo">Calidad</h2>
     <!-- ================= QA Tester (Manual / Automatización) ================= -->
-    <input type="checkbox" id="principalQA">
-    <label for="principalQA">QA Tester</label>
+    <div class="rol-principal">
+        <input type="checkbox" id="principalQA">
+        <label for="principalQA">QA Tester</label>
+    </div>
 
     <div id="contenedorQA" class="contenedor">
 
@@ -304,10 +384,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
 
     <br><br>
 
-    <p>Infrestructura</p>
+    </section>
+
+    <section class="categoria-card">
+        <h2 class="categoria-titulo">Infraestructura</h2>
 <!-- ================= DEVOPS ================= -->
-    <input type="checkbox" id="principalDV">
-    <label for="principalDV">DevOps Engineer</label>
+    <div class="rol-principal">
+        <input type="checkbox" id="principalDV">
+        <label for="principalDV">DevOps Engineer</label>
+    </div>
 
     <div id="contenedorDV" class="contenedor">
 
@@ -336,10 +421,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
 
     <br><br>
 
-    <p>Liderazgo Tecnico</p>
+    </section>
+
+    <section class="categoria-card">
+        <h2 class="categoria-titulo">Liderazgo T&eacute;cnico</h2>
 <!-- ================= TECH LEAD ================= -->
-    <input type="checkbox" id="principalTL">
-    <label for="principalTL">Tech Lead</label>
+    <div class="rol-principal">
+        <input type="checkbox" id="principalTL">
+        <label for="principalTL">Tech Lead</label>
+    </div>
 
     <div id="contenedorTL" class="contenedor">
 
@@ -366,11 +456,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
 
     </div>
 
-    <br><br>
+    </section>
     <!-- ================= Generar Ticket ================= -->
     <br><br>
     <button id="btnTotal">Generar Ticket</button>
-    <a href="historial.php" style="display: inline-block; background-color: #17a2b8; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; margin-left: 10px;">📋 Ver Historial</a>
+    <a href="historial.php" style="display: inline-block; background-color: #17a2b8; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; margin-left: 10px;">Ver Historial</a>
 
     <h2>Total General: $<span id="totalGeneral">0</span></h2>
 
@@ -389,7 +479,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
         <input type="hidden" name="total_cotizacion" id="total_hidden" value="0">
         
         <br><br>
-        <button type="submit" name="guardar_cotizacion" value="1" style="background-color: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer;">💾 Guardar Cotización</button>
+        <button type="submit" name="guardar_cotizacion" value="1" style="background-color: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer;">Guardar Cotización</button>
     </form>
 
     <!-- ================= Generar PDF ================= -->

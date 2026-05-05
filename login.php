@@ -58,7 +58,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="CoTCss.css">
 </head>
 
 <body>
@@ -76,5 +76,9 @@ $conn->close();
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                <button type="submit">Login</button>
+<button type="submit">Login</button>
+            </form>
         </div>
+    </div>
+</body>
+</html>

@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
         background: #f7f7f7;
         color: #0f2140;
         margin: 0;
-        padding: 32px 0;
+        padding: 0;
     }
 
     .contenedor { display: none; margin-left: 20px; }
@@ -322,40 +322,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
 </style>
 </head>
 <body>
-    <a href="logout.php" style="float: right;">Cerrar sesión</a>
-    <?php echo $mensaje; ?>
-    
-    <!-- Axotimate Full-Width Header using project colors -->
-    <div class="axotimate-heading" style="
-        background: linear-gradient(135deg, #2563eb 0%, #0758ff 100%);
-        color: white;
-        text-align: center;
-        padding: 32px 20px;
-        border-radius: 0 0 20px 20px;
-        box-shadow: 0 8px 32px rgba(37, 99, 235, 0.3);
-        margin: 0 0 40px 0;
-        width: 100vw;
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-weight: 700;
-    ">
-        <h1 style="
-            font-size: 36px;
-            margin: 0 0 8px 0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        ">Axotimate</h1>
-        <p style="
-            font-size: 16px;
-            opacity: 0.95;
-            margin: 0;
-        ">Software Development Cost Estimator</p>
-    </div>
+
+    <!-- Header Axotimate azul full-width -->
+    <header style="background: #2563eb; color: white; padding: 30px 20px; text-align: center; width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; box-shadow: 0 4px 20px rgba(37,99,235,0.3); margin-bottom: 40px;">
+        <h1 style="color: white; font-size: 48px; font-weight: bold; margin: 0 0 10px 0; font-family: 'Segoe UI', Tahoma, sans-serif;">Axotimate</h1>
+        <a href="logout.php" style="position: absolute; top: 20px; right: 20px; color: rgba(255,255,255,0.9); text-decoration: none; font-weight: 500; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px;">Cerrar sesión</a>
+    </header>
+
     <section class="categoria-card">
-        <h2 class="categoria-titulo">Desarrollo</h2>
+        <h2 class="categoria-titulo">Desarrollo
         <p class="categoria-subtitulo">core del equipo</p>
 
     <!-- ================= BACKEND ================= -->

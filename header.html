@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axotimate Header Demo</title>
+    <link rel="stylesheet" href="CoTCss.css">
+    <style>
+        /* Ajustes específicos para demo standalone */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .demo-header {
+            height: 250px;
+            position: relative;
+        }
+        .header-content {
+            height: 100%;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .header-main h1 {
+            font-size: 48px;
+            margin: 0 0 8px 0;
+        }
+        .header-main p {
+            font-size: 18px;
+            margin: 0 0 12px 0;
+        }
+        .replace-line {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <header class="axotimate-heading demo-header">
+        <div class="header-content">
+            <div class="header-main">
+                <h1>Axotimate</h1>
+                <p>Software Development Cost Estimator</p>
+                <div class="replace-line">REPLACE</div>
+            </div>
+            <a href="#" class="logout-header-link">Cerrar sesión</a>
+        </div>
+    </header>
+</body>
+</html>

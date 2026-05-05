@@ -45,35 +45,18 @@ $stmt->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* Modern Historial Design - Matches CotView */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
         }
         .contenedor {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 0 20px 20px;
-        }
-        .encabezado {
-            background: #2563eb;
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-            width: 100vw;
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
-            box-shadow: 0 4px 20px rgba(37,99,235,0.3);
-            margin-bottom: 40px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         h1 {
             color: #333;
@@ -164,19 +147,14 @@ $stmt->close();
 <body>
 
 <div class="contenedor">
-    <!-- Axotimate Header -->
-    <div class="encabezado">
-        <a href="logout.php" style="position: absolute; top: 20px; right: 20px; color: rgba(255,255,255,0.9); text-decoration: none; font-weight: 500; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px;">Cerrar sesión</a>
-        <h1 style="color: white; font-size: 42px; font-weight: bold; margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif;">Axotimate - Historial</h1>
-        <p style="opacity: 0.95; margin: 5px 0 0 0; font-size: 18px;">Tus cotizaciones de desarrollo software</p>
-    </div>
+    <a href="logout.php" class="logout-btn">Cerrar sesión</a>
+    <h1>Historial de Cotizaciones</h1>
+    <p>Usuario: <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong></p>
 
-    <div style="text-align: center; margin-bottom: 30px;">
-        <a href="CotView.php" style="background: #10b981; color: white; padding: 14px 28px; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(16,185,129,0.3); transition: all 0.3s;">← Nueva Cotización</a>
-        <button onclick="limpiarHistorial()" style="background: #f59e0b; color: white; padding: 14px 28px; border: none; border-radius: 12px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(245,158,11,0.3); cursor: pointer; transition: all 0.3s; margin-left: 15px;">Limpiar Historial</button>
+    <div class="botones-superior">
+        <a href="CotView.php">← Volver a Cotizador</a>
+        <button onclick="limpiarHistorial()" style="background-color: #ffc107; color: #000;">Limpiar Historial</button>
     </div>
-
-    <h2 style="color: #1e293b; font-size: 28px; text-align: center; margin-bottom: 20px;">Usuario: <strong style="color: #2563eb;"><?php echo htmlspecialchars($_SESSION['username']); ?></strong></h2>
 
     <?php if ($cotizaciones->num_rows > 0): ?>
         <table>
@@ -195,8 +173,11 @@ $stmt->close();
                         <td><strong>$<?php echo number_format($row['total_costo'], 2); ?></strong></td>
                         <td><?php echo date('d/m/Y H:i', strtotime($row['fecha_creacion'])); ?></td>
                         <td class="acciones">
-                            <a href="detail.php?id=<?php echo (int) $row['id']; ?>" class="btn-ver" title="Ver Detalles"><i class="fas fa-eye"></i> Ver Detalles</a>
-                            <button type="button" class="btn-eliminar" onclick="eliminarCotizacion(<?php echo (int) $row['id']; ?>)">Eliminar</button>
+                            <a href="detail.php?id=<?php echo $row['id']; ?>" class="btn-ver" title="Ver Detalles"><i class="fas fa-eye"></i> Ver Detalles</a>
+                            <form method="POST" action="eliminar_cotizacion.php" style="display: inline;" onsubmit="return confirm('¿Estás seguro que deseas eliminar esta cotización?');">
+                                <input type="hidden" name="json_data" value='{"id":<?php echo $row['id']; ?>}'>
+                                <button type="submit" class="btn-eliminar">Eliminar</button>
+                            </form>
                         </td>
                     </tr>
                 <?php endwhile; ?>
@@ -212,28 +193,7 @@ $stmt->close();
 </div>
 
 <script>
-function eliminarCotizacion(id) {
-    if (confirm('¿Estás seguro que deseas eliminar esta cotización?')) {
-        fetch('eliminar_cotizacion.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ id: id })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Cotización eliminada');
-                location.reload();
-            } else {
-                alert('Error: ' + data.message);
-            }
-        });
-    }
-}
-
-function limpiarHistorial() {
+function limpiarHistorial() 
     if (confirm('¿Estás seguro que deseas eliminar TODO el historial? Esta acción no se puede deshacer.')) {
         fetch('limpiar_historial.php', {
             method: 'POST'
@@ -257,3 +217,4 @@ function limpiarHistorial() {
 <?php
 $conn->close();
 ?>
+

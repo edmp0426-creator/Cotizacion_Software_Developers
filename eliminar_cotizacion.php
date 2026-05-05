@@ -19,7 +19,8 @@ if ($conn->connect_error) {
     exit();
 }
 
-$data = json_decode(file_get_contents("php://input"), true);
+$json_str = $_POST['json_data'] ?? file_get_contents("php://input");
+$data = json_decode($json_str, true);
 
 if (!isset($data['id'])) {
     echo json_encode(['success' => false, 'message' => 'ID no proporcionado']);

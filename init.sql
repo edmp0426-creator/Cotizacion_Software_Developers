@@ -16,9 +16,9 @@ ON DUPLICATE KEY UPDATE id=id;
 CREATE TABLE IF NOT EXISTS historial_cotizaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
-    nombre_cotizacion VARCHAR(100),
-    datos_cotizacion LONGTEXT NOT NULL,
+    nombre_cotizacion VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    datos_cotizacion LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     total_costo DECIMAL(10, 2),
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

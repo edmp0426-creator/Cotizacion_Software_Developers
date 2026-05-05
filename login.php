@@ -65,7 +65,7 @@ $conn->close();
     <div class="login-container">
         <div class="form-box" id="login-form">
             <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-                <img src = "imagenes/logo.png" alt="Logo" class="logo">
+                <img src="imagenes/logo.png?v=1" alt="Logo" class="logo">
                 <h2>Login</h2>
                 <?php if (isset($error)) { echo '<p class="error">' . $error . '</p>'; } ?>
                 <div class="input-group">

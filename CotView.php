@@ -71,267 +71,517 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Calculadora de Sueldos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axotimate - Cotizador de software</title>
+<link rel="icon" href="imagenes/logo.png" type="image/png">
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f7f7f7;
-        color: #0f2140;
-        margin: 0;
-        padding: 0;
+    :root {
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --surface-alt: #eef2ff;
+        --text: #0f172a;
+        --text-muted: #475569;
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --accent: #14b8a6;
+        --border: rgba(15, 23, 42, 0.08);
+        --shadow: 0 24px 60px rgba(15, 23, 42, 0.1);
     }
 
-    .contenedor { display: none; margin-left: 20px; }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: radial-gradient(circle at top, rgba(37, 99, 235, 0.16), transparent 35%), var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .page-header {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.96);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    .page-header .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 24px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .brand-label {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .brand-logo {
+        width: 100px;
+        height: 100px;
+        display: block;
+    }
+
+    .brand-label > div {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .brand-title {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--primary);
+        letter-spacing: 0.06em;
+    }
+
+    .brand-subtitle {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .button,
+    button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: none;
+        border-radius: 999px;
+        padding: 0.95rem 1.4rem;
+        font-weight: 700;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        cursor: pointer;
+    }
+
+    .button:hover,
+    button:hover {
+        transform: translateY(-1px);
+    }
+
+    .button-primary {
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 14px 30px rgba(37, 99, 235, 0.18);
+    }
+
+    .button-secondary {
+        background: rgba(37, 99, 235, 0.08);
+        color: var(--primary);
+    }
+
+    .button-ghost {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid rgba(15, 23, 42, 0.12);
+    }
+
+    .page-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px 24px 48px;
+    }
+
+    .hero-panel {
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.95), rgba(56, 189, 248, 0.95));
+        color: #fff;
+        border-radius: 28px;
+        padding: 40px 38px;
+        display: grid;
+        gap: 18px;
+        box-shadow: var(--shadow);
+        margin-bottom: 34px;
+    }
+
+    .hero-panel .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.24em;
+        font-size: 0.78rem;
+        opacity: 0.9;
+    }
+
+    .hero-panel h1 {
+        font-size: clamp(2.5rem, 4vw, 3.8rem);
+        line-height: 0.95;
+        max-width: 760px;
+    }
+
+    .hero-panel p {
+        max-width: 720px;
+        font-size: 1.05rem;
+        color: rgba(255, 255, 255, 0.92);
+        margin-top: 6px;
+    }
+
+    .hero-cta-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 8px;
+    }
+
+    .hero-cta {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .hero-cta:hover {
+        background: rgba(255, 255, 255, 0.18);
+    }
+
+    .section-grid {
+        display: grid;
+        gap: 24px;
+        margin-bottom: 28px;
+    }
 
     .categoria-card {
-        background: #fff;
-        border: 1px solid #e9e9e9;
-        border-radius: 14px;
-        box-shadow: 0 1px 3px rgba(15, 33, 64, 0.14);
-        box-sizing: border-box;
-        margin: 0 auto 24px;
-        max-width: 672px;
-        padding: 34px 32px 28px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+        padding: 28px 28px 26px;
     }
 
     .categoria-titulo {
-        color: #0758ff;
-        font-size: 20px;
-        font-weight: 700;
         margin: 0 0 8px;
+        color: var(--primary);
+        font-size: 1rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
     }
 
     .categoria-subtitulo {
-        color: #536079;
-        font-size: 13px;
-        margin: 0 0 26px;
+        margin: 0 0 22px;
+        color: var(--text-muted);
+        font-size: 0.95rem;
     }
 
     .rol-principal {
         align-items: center;
         display: flex;
-        gap: 12px;
-        margin: 0 0 20px;
+        gap: 14px;
+        margin: 0 0 18px;
     }
 
     .rol-principal input[type="checkbox"] {
-        accent-color: #424242;
+        accent-color: var(--primary);
+        width: 18px;
+        height: 18px;
         flex: 0 0 auto;
-        height: 20px;
-        width: 20px;
     }
 
     .rol-principal label {
-        color: #0f2140;
-        font-size: 16px;
+        color: var(--text);
+        font-size: 1rem;
         font-weight: 700;
     }
 
     .categoria-card > br {
         display: none;
     }
-    
-    /* Simplified CotView Redesign Styles */
-    .redesign-section {
-        max-width: 700px;
-        margin: 30px auto;
-        padding: 0 16px;
+
+    .contenedor {
+        display: none;
+        margin-left: 20px;
+        padding-left: 16px;
+        border-left: 2px dashed rgba(37, 99, 235, 0.18);
     }
-    
+
+    .contenedor > div {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+    }
+
+    .contenedor > div:last-child {
+        border-bottom: none;
+    }
+
+    .contenedor label {
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .contenedor input[type="number"] {
+        width: 90px;
+        padding: 12px 14px;
+        border: 1px solid rgba(15, 23, 42, 0.14);
+        border-radius: 14px;
+        background: #f8fafc;
+        color: var(--text);
+    }
+
+    .contenedor p {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+
+    .redesign-section {
+        display: grid;
+        gap: 24px;
+        margin-top: 20px;
+    }
+
     .action-buttons {
         display: flex;
-        gap: 10px;
-        justify-content: center;
-        margin-bottom: 24px;
+        gap: 14px;
         flex-wrap: wrap;
+        justify-content: center;
     }
-    
+
     .btn-modern {
-        padding: 12px 24px;
-        font-size: 15px;
-        font-weight: 500;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-decoration: none;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 14px 24px;
+        min-width: 170px;
+        border-radius: 16px;
+        border: none;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 20px 38px rgba(15, 23, 42, 0.08);
     }
-    
-    #btnTotal.btn-modern {
-        background: #2563eb;
-        color: white;
+
+    .btn-modern:hover {
+        transform: translateY(-2px);
     }
-    
-    #btnTotal.btn-modern:hover {
-        background: #1d4ed8;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-    }
-    
-    .btn-history {
-        background: #0ea5e9;
-        color: white;
-    }
-    
-    .btn-history:hover {
-        background: #0284c7;
-        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
-    }
-    
+
     .btn-modern.btn-secondary {
-        background: #6b7280;
-        color: white;
+        background: rgba(15, 23, 42, 0.08);
+        color: var(--text);
     }
-    
-    .btn-modern.btn-secondary:hover {
-        background: #4b5563;
-        box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+
+    #btnTotal {
+        background: var(--accent);
+        color: #fff;
     }
-    
+
+    .btn-history {
+        background: var(--primary);
+        color: #fff;
+    }
+
     .grand-total-card {
-        background: #2563eb;
-        color: white;
+        background: #0f172a;
+        color: #fff;
+        border-radius: 24px;
+        padding: 28px;
         text-align: center;
-        padding: 24px;
-        border-radius: 12px;
-        margin-bottom: 24px;
-        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
-        font-size: 24px;
-        font-weight: 600;
+        box-shadow: 0 28px 60px rgba(15, 23, 42, 0.14);
     }
-    
+
     .grand-total-card span {
-        font-size: 1.8em;
+        display: block;
+        margin-top: 12px;
+        font-size: 3rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
     }
-    
-    .summary-card {
-        background: #ffffff;
-        border-radius: 12px;
-        padding: 24px;
-        margin-bottom: 24px;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e5e7eb;
+
+    .summary-card,
+    .save-form-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 28px;
+        box-shadow: var(--shadow);
     }
-    
-    .summary-card h3 {
-        color: #2563eb;
-        margin-bottom: 16px;
-        font-size: 20px;
+
+    .summary-card h3,
+    .save-form-card h3 {
+        margin: 0 0 18px;
+        color: var(--primary);
+        font-size: 1.2rem;
     }
-    
+
     .summary-card ul {
         list-style: none;
+        display: grid;
+        gap: 12px;
     }
-    
+
     .summary-card li {
-        background: #f9fafb;
-        padding: 12px;
-        margin-bottom: 8px;
-        border-radius: 8px;
-        border-left: 3px solid #2563eb;
-        font-size: 15px;
+        background: #f8fafc;
+        padding: 14px 18px;
+        border-radius: 18px;
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        color: var(--text);
     }
-    
-    .save-form-card {
-        background: #ffffff;
-        border-radius: 12px;
-        padding: 24px;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e5e7eb;
-    }
-    
-    .save-form-card h3 {
-        color: #2563eb;
-        margin-bottom: 16px;
-        font-size: 20px;
-    }
-    
+
     .save-form-card label {
         display: block;
-        margin-bottom: 6px;
-        color: #374151;
-        font-weight: 500;
+        margin-bottom: 10px;
+        color: var(--text-muted);
+        font-weight: 600;
     }
-    
+
     .save-form-card input[type="text"] {
         width: 100%;
-        padding: 12px;
-        border: 2px solid #d1d5db;
-        border-radius: 8px;
-        font-size: 15px;
-        transition: border-color 0.2s ease;
-        margin-bottom: 16px;
+        padding: 14px 18px;
+        border: 1px solid rgba(15, 23, 42, 0.14);
+        border-radius: 18px;
+        background: #f8fafc;
+        color: var(--text);
+        font-size: 1rem;
     }
-    
-    .save-form-card input[type="text"]:focus {
-        outline: none;
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.05);
-    }
-    
+
     .form-actions {
         display: flex;
-        gap: 10px;
-        justify-content: center;
         flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 20px;
+        justify-content: space-between;
     }
-    
-    /* Responsive */
+
+    .form-actions .btn-modern {
+        min-width: 170px;
+        width: auto;
+        flex: 1;
+    }
+
+    .form-actions .btn-modern:not(:last-child) {
+        margin-right: 0;
+    }
+
     @media (max-width: 768px) {
-        .redesign-section {
-            padding: 0 16px;
+        .form-actions {
+            flex-direction: column;
+            align-items: stretch;
         }
-        
+
+        .form-actions .btn-modern {
+            width: 100%;
+        }
+    }
+
+    @media (min-width: 900px) {
+        .section-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .redesign-section {
+            grid-template-columns: 1.4fr 0.9fr;
+            align-items: start;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .page-header .header-content {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .hero-panel {
+            border-radius: 24px;
+            padding: 32px;
+        }
+
+        .section-grid {
+            grid-template-columns: 1fr;
+        }
+
         .action-buttons {
             flex-direction: column;
-            align-items: center;
+            align-items: stretch;
         }
-        
-        .btn-modern {
+    }
+
+    @media (max-width: 520px) {
+        .page-container {
+            padding: 24px 16px 42px;
+        }
+
+        .contenedor > div {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .contenedor input[type="number"] {
             width: 100%;
-            max-width: 300px;
         }
-        
-        .grand-total-card {
-            padding: 24px 20px;
-            font-size: 24px;
+
+        .header-actions {
+            width: 100%;
+            justify-content: space-between;
         }
-        
-        .grand-total-card span {
-            font-size: 1.8em;
-        }
-        
-        .summary-card, .save-form-card {
-            padding: 24px 20px;
+
+        .hero-cta-group {
+            flex-direction: column;
+            align-items: stretch;
         }
     }
-    
-    @media (max-width: 480px) {
-        .grand-total-card {
-            font-size: 20px;
-        }
-        
-        .grand-total-card span {
-            font-size: 1.5em;
-        }
-    }
-    
 </style>
 </head>
 <body>
 
-    <!-- Header Axotimate azul full-width -->
-    <header style="background: #2563eb; color: white; padding: 30px 20px; text-align: center; width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; box-shadow: 0 4px 20px rgba(37,99,235,0.3); margin-bottom: 40px;">
-        <h1 style="color: white; font-size: 48px; font-weight: bold; margin: 0 0 10px 0; font-family: 'Segoe UI', Tahoma, sans-serif;">Axotimate</h1>
-        <a href="logout.php" style="position: absolute; top: 20px; right: 20px; color: rgba(255,255,255,0.9); text-decoration: none; font-weight: 500; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px;">Cerrar sesión</a>
+    <header class="page-header">
+        <div class="header-content">
+            <div class="brand-label">
+                <img src="imagenes/logo.png?v=2" alt="Axotimate Logo" class="brand-logo">
+                <div>
+                    <span class="brand-title">Axotimate</span>
+                    <span class="brand-subtitle">Cotiza proyectos de software con claridad y confianza</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="#" class="button button-secondary">¿Necesitas un CRM?</a>
+                <a href="logout.php" class="button button-ghost">Cerrar sesión</a>
+            </div>
+        </div>
     </header>
 
-    <section class="categoria-card">
-        <h2 class="categoria-titulo">Desarrollo
-        <p class="categoria-subtitulo">core del equipo</p>
+    <div class="page-container">
+        <section class="hero-panel">
+            <span class="eyebrow">Crea tu cotización gratis</span>
+            <h1>Convierte tu estimación en una propuesta profesional</h1>
+            <p>Ingresa el detalle de tu equipo, ajusta cargos y guarda tu cotización en un diseño más moderno sin perder la esencia original.</p>
+            <div class="hero-cta-group">
+                <a href="historial.php" class="button button-secondary hero-cta">Ver cotizaciones guardadas</a>
+            </div>
+        </section>
+
+        <div class="section-grid">
+            <section class="categoria-card">
+                <h2 class="categoria-titulo">Desarrollo</h2>
+                <p class="categoria-subtitulo">Core del equipo</p>
 
     <!-- ================= BACKEND ================= -->
     <div class="rol-principal">
@@ -651,6 +901,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
     </div>
 
     </section>
+        </div>
     
     <div class="redesign-section">
         <!-- Action Buttons Card -->
@@ -686,6 +937,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_cotizacion'])
             </div>
         </form>
     </div>
+</div>
 
     <script>
 
